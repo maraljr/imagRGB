@@ -7,7 +7,7 @@ To run this project you will need the following installed:
 - numpy
 - scikit-learn
 
-A [requirements.txt](./requirements.txt) file is included in the project, so can install these libraries by running `pip install -r requirements.txt` from the root of the project.
+A [requirements.txt](./requirements.txt) file is included in the project, so you can install these libraries by running `pip install -r requirements.txt` from the root of the project.
 
 Run the application by running main.py, which includes hard-coded values for `IMAGE_PATH` and `NUM_COLORS` that you can change to get different results.
 
