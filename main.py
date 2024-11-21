@@ -5,25 +5,9 @@ import numpy as np
 import os
 import argparse
 
-# TODO: delete this function if not used in final project
-def extract_colors(image_path, num_colors):
-    image = Image.open(image_path)
-    image = image.resize((150, 150))
-    image_array = np.array(image)
-    pixels = image_array.reshape(-1, 3)
-    
-    kmeans = KMeans(n_clusters=num_colors)
-    kmeans.fit(pixels)
-    
-    colors = kmeans.cluster_centers_
-    colors = colors.round().astype(int)
-    
-    return colors
-
-def extract_palette(image_path, n_colors, percentile):
-    # Load and preprocess the image
-    image = cv2.imread(image_path)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+def extract_palette(image, n_colors, percentile):
+    # Convert PIL image to OpenCV format
+    image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
     image = image.reshape((image.shape[0] * image.shape[1], 3))
     # Apply K-Means to get initial clusters
     kmeans = KMeans(n_clusters=n_colors, random_state=0).fit(image)
@@ -35,7 +19,7 @@ def extract_palette(image_path, n_colors, percentile):
         centroids[i] = np.percentile(cluster_points, percentile, axis=0)
     return centroids.round().astype(int)
 
-def create_color_palette(colors, output_path):
+def create_color_palette(colors):
     color_height = 200
     width, height = 800, color_height * len(colors)
     palette = Image.new('RGB', (width, height), color='white')
@@ -64,6 +48,9 @@ def create_color_palette(colors, output_path):
         for j, text in enumerate(text_list):
             draw.text((20, top + text_top + j * text_spacing), text, fill='black' if sum(color) > 382 else 'white', font=font)
 
+    return palette
+
+def save_palette(palette, output_path):
     palette.save(output_path, dpi=(300, 300))
     print(f"Color palette saved to {output_path}")
 
@@ -84,18 +71,19 @@ def main():
     args = parser.parse_args()
 
     file_name = args.image_path.split("/")[-1].split(".")[0]
-    colors = extract_palette(args.image_path, args.num_colors, args.percentile)
+    image = Image.open(args.image_path)
+    colors = extract_palette(image, args.num_colors, args.percentile)
     
     os.makedirs(os.path.dirname(args.output_dir), exist_ok=True)
 
     output_path = ""
-    # TODO: add better handling for user input (add .png if not present, including trailing / for output_dir if not present)
     if args.output_name == "_":
         output_path = f"{args.output_dir}{file_name}-palette-colors-{args.num_colors}-percentile-{args.percentile}.png"
     else:
         output_path = f"{args.output_dir}{args.output_name}.png"
 
-    create_color_palette(colors, output_path)
+    palette = create_color_palette(colors)
+    save_palette(palette, output_path)
 
 if __name__ == "__main__":
     main()

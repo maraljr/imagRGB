@@ -10,6 +10,8 @@ To run this project you will need the following installed:
 
 A [requirements.txt](./requirements.txt) file is included in the project, so you can install these libraries by running `pip install -r requirements.txt` from the root of the project.
 
+### Run with CLI
+
 Run the application by running [main.py](./main.py): `python main.py [IMAGE_PATH]`. You must provide the image path as a positional argument. You can provide other optional arguments to adjust the output. Run `python main.py --help` for a list of arguments.
 ```
 Generate a color palette from an image.
@@ -28,6 +30,10 @@ options:
   --percentile PERCENTILE
                         Percentile for color extraction. 1-100. Default is 15.
 ```
+
+### Run Streamlit GUI App
+
+Start a locally hosted streamlit app by running `streamlit run app.py` or `python -m streamlit app.py`.
 
 ## Attribution
 - [Example images](./example-images/) in this project were sourced from [https://unsplash.com/](https://unsplash.com/)
