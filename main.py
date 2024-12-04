@@ -66,7 +66,7 @@ def main():
     parser.add_argument("--num_colors", type=lambda x: check_range(x, 1, 10), default=5, help="Number of colors to extract from the image. 1-10. Default is 5.")
     parser.add_argument("--output_dir", type=str, default="./palettes/", help="Directory to save the color palette image. Default is ./palettes/")
     parser.add_argument("--output_name", type=str, default="_", help="Name of the output color palette image. Default is the input file name plus added data.")
-    parser.add_argument("--percentile", type=lambda x: check_range(x, 1, 100), default=15, help="Percentile for color extraction. 1-100. Default is 15.")
+    parser.add_argument("--percentile", type=lambda x: check_range(x, 1, 100), default=15, help="Percentile for color extraction. 1-100. Default is 15. Lower percentile values tend to be darker and have more contrast.")
 
     args = parser.parse_args()
 

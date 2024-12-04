@@ -14,6 +14,8 @@ A [requirements.txt](./requirements.txt) file is included in the project, so you
 
 Run the application by running [main.py](./main.py): `python main.py [IMAGE_PATH]`. You must provide the image path as a positional argument. You can provide other optional arguments to adjust the output. Run `python main.py --help` for a list of arguments.
 ```
+usage: main.py [-h] [--num_colors NUM_COLORS] [--output_dir OUTPUT_DIR] [--output_name OUTPUT_NAME] [--percentile PERCENTILE] image_path
+
 Generate a color palette from an image.
 
 positional arguments:
@@ -28,7 +30,7 @@ options:
   --output_name OUTPUT_NAME
                         Name of the output color palette image. Default is the input file name plus added data.
   --percentile PERCENTILE
-                        Percentile for color extraction. 1-100. Default is 15.
+                        Percentile for color extraction. 1-100. Default is 15. Lower percentile values tend to be darker and have more contrast.
 ```
 
 ### Run Streamlit GUI App
