@@ -6,6 +6,17 @@ import os
 import argparse
 
 def extract_palette(image, n_colors, percentile):
+    """
+    Extracts a color palette from an image using K-Means clustering and percentile-based centroids.
+
+    Args:
+        image (PIL.Image.Image): The input image.
+        n_colors (int): Number of colors to extract.
+        percentile (int): Percentile for color extraction.
+
+    Returns:
+        np.ndarray: Array of extracted colors.
+    """
     # Convert PIL image to OpenCV format
     image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
     image = image.reshape((image.shape[0] * image.shape[1], 3))
@@ -20,6 +31,15 @@ def extract_palette(image, n_colors, percentile):
     return centroids.round().astype(int)
 
 def create_color_palette(colors):
+    """
+    Creates an image of a color palette from a list of colors.
+
+    Args:
+        colors (np.ndarray): Array of colors.
+
+    Returns:
+        PIL.Image.Image: Image of the color palette.
+    """
     color_height = 200
     width, height = 800, color_height * len(colors)
     palette = Image.new('RGB', (width, height), color='white')
@@ -51,16 +71,40 @@ def create_color_palette(colors):
     return palette
 
 def save_palette(palette, output_path):
+    """
+    Saves the color palette image to the specified path.
+
+    Args:
+        palette (PIL.Image.Image): The color palette image.
+        output_path (str): Path to save the image.
+    """
     palette.save(output_path, dpi=(300, 300))
     print(f"Color palette saved to {output_path}")
 
 def check_range(value, min_val, max_val):
+    """
+    Checks if a value is within a specified range.
+
+    Args:
+        value (str): The value to check.
+        min_val (int): Minimum allowed value.
+        max_val (int): Maximum allowed value.
+
+    Returns:
+        int: The validated integer value.
+
+    Raises:
+        argparse.ArgumentTypeError: If the value is not within the range.
+    """
     ivalue = int(value)
     if ivalue < min_val or ivalue > max_val:
         raise argparse.ArgumentTypeError(f"Value must be between {min_val} and {max_val}")
     return ivalue
 
 def main():
+    """
+    Main function to generate a color palette from an image.
+    """
     parser = argparse.ArgumentParser(description="Generate a color palette from an image.")
     parser.add_argument("image_path", type=str, help="Path to the input image file.")
     parser.add_argument("--num_colors", type=lambda x: check_range(x, 1, 10), default=5, help="Number of colors to extract from the image. 1-10. Default is 5.")
